@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.0.17
   email_validator: ^2.1.17
   image_picker: ^0.8.6+3
+  giff_dialog: ^1.0.1
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,7 @@ flutter:
     - assets/images/register_background.jpg
     - assets/images/pokemon_logo.png
     - assets/images/PokeBall.png
+    - assets/images/UltraBall.png
     - assets/images/Professor_oak.jpg
     - assets/images/Avatar_man_1.png
     - assets/images/Avatar_man_2.png
@@ -79,6 +81,7 @@ flutter:
     - assets/images/Avatar_woman_3.png
     - assets/images/Avatar_woman_4.png
     - assets/images/Avatar_woman_5.png
+    - assets/images/hello.gif
 
   # To add assets to your application, add an assets section, like this:
   # assets:

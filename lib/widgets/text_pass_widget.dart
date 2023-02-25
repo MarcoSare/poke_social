@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class textFieldPass extends StatefulWidget{
+class textFieldPass extends StatefulWidget {
   var visible = true;
   var error = false;
   var controlador;
-  GlobalKey<FormState> formKey =  GlobalKey<FormState>();
-
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   State<StatefulWidget> createState() => _textFieldPassState();
@@ -16,66 +15,63 @@ class textFieldPass extends StatefulWidget{
 class _textFieldPassState extends State<textFieldPass> {
   @override
   Widget build(BuildContext context) {
-    
-    
-
-    return  Container(
-        margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-
+    return Container(
+        margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
         child: Form(
             key: widget.formKey,
-            child:
-            TextFormField(
+            child: TextFormField(
                 textInputAction: TextInputAction.next,
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(50),
                 ],
                 obscureText: widget.visible,
-                style: TextStyle(fontSize:14),
+                style: TextStyle(fontSize: 14),
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                       borderSide: BorderSide(color: Theme.of(context).primaryColorDark)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColorDark)),
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide()),
                   errorBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(color: Theme.of(context).primaryColorDark)),
+                      borderSide: BorderSide(
+                          color: Theme.of(context).primaryColorDark)),
                   labelText: "Password",
                   hintText: ("Enter your password"),
                   hintStyle: TextStyle(fontSize: 14),
-                  prefixIcon:
-                  Container(
-                    margin:  EdgeInsets.fromLTRB(14, 0, 14, 0),
+                  prefixIcon: Container(
+                    margin: EdgeInsets.fromLTRB(14, 0, 14, 0),
                     child: Icon(Icons.vpn_key_sharp, size: 14),
                   ),
-
                   suffixIcon: IconButton(
-                    icon: widget.visible ?  Icon(Icons.visibility_off,)
-                        : Icon(Icons.visibility), onPressed: () {setState(() => widget.visible = !widget.visible); },
+                    icon: widget.visible
+                        ? Icon(
+                            Icons.visibility_off,
+                          )
+                        : Icon(Icons.visibility),
+                    onPressed: () {
+                      setState(() => widget.visible = !widget.visible);
+                    },
                   ),
-                  labelStyle: TextStyle(fontSize:  14),
+                  labelStyle: TextStyle(fontSize: 14),
                   errorStyle: TextStyle(fontSize: 14),
-
                 ),
-                onSaved: (value){
+                onSaved: (value) {
                   widget.controlador = value;
                 },
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (value){
-                  if(value!.isEmpty){
+                validator: (value) {
+                  if (value!.isEmpty) {
                     return "Enter your password";
-                  }
-                  else
-                  if(widget.error){
+                  } else if (widget.error) {
                     return "Email or password wrong";
                   }
                 },
                 onChanged: (value) => setState(() {
-                  widget.controlador = value;
-                  widget.error = false;
-                })
-            )));
+                      widget.controlador = value;
+                      widget.error = false;
+                    }))));
   }
 }
