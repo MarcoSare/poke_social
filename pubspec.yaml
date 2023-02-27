@@ -67,6 +67,7 @@ flutter:
   assets:
     - assets/images/login_background.jpg
     - assets/images/register_background.jpg
+    - assets/images/register_background_desktop.jpg
     - assets/images/pokemon_logo.png
     - assets/images/PokeBall.png
     - assets/images/UltraBall.png

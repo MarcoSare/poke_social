@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:poke_social/responsive.dart';
 import 'package:poke_social/widgets/alerts_widget.dart';
 import 'package:poke_social/widgets/text_email_widget.dart';
 import 'package:poke_social/widgets/text_form_widget.dart';
@@ -46,110 +47,103 @@ class _RegisterScreenState extends State<RegisterScreen> {
       backgroundColor: Theme.of(context).primaryColor,
     );
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/images/register_background.jpg"),
-              fit: BoxFit.cover),
-        ),
-        padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-        child: SingleChildScrollView(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                    height: 100,
-                    width: 290,
+      body: Responsive(
+          mobile: MobileRegisterScreen(dataRegister: dataRegister(btnSend)),
+          desktop: DesktopLoginScreen(
+            dataRegister: dataRegister(btnSend),
+          )),
+    );
+  }
+
+  Widget dataRegister(SocialLoginButton btnSend) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              height: 100,
+              width: 290,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/images/pokemon_logo.png"),
+                    fit: BoxFit.fill),
+              ),
+              margin: const EdgeInsets.all(20)),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(30.0),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+              child: Container(
+                padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(30)),
+                child: Column(children: [
+                  const Text(
+                    "Join us!",
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  ),
+                  const Text(
+                    "Be part of our great community",
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                    textAlign: TextAlign.center,
+                  ),
+                  Container(
+                    height: 150,
+                    width: 150,
                     decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/pokemon_logo.png"),
-                          fit: BoxFit.fill),
-                    ),
-                    margin: const EdgeInsets.all(20)),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(30.0),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
-                      decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Column(children: [
-                        const Text(
-                          "Join us!",
-                          style: TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.bold),
-                        ),
-                        const Text(
-                          "Be part of our great community",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.normal),
-                          textAlign: TextAlign.center,
-                        ),
-                        Container(
-                          height: 150,
-                          width: 150,
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage("assets/images/PokeBall.png"),
-                                  fit: BoxFit.fill)),
-                          margin: const EdgeInsets.all(5),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              image_selected == null
-                                  ? CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                          "assets/images/Avatar_$avatarName.png"),
-                                      backgroundColor: Colors.transparent,
-                                      radius: 55,
-                                    )
-                                  : CircleAvatar(
-                                      backgroundImage:
-                                          FileImage(image_selected),
-                                      backgroundColor: Colors.transparent,
-                                      radius: 55,
-                                    ),
-                              Positioned(
-                                right: -1,
-                                bottom: 0,
-                                child: CircleAvatar(
-                                  backgroundColor:
-                                      const Color.fromRGBO(23, 32, 42, 1),
-                                  radius: 30,
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.add_a_photo,
-                                      color: Colors.white,
-                                      size: 30,
-                                    ),
-                                    onPressed: () async {
-                                      await openDialog();
-                                    },
-                                  ),
-                                ),
+                        image: DecorationImage(
+                            image: AssetImage("assets/images/PokeBall.png"),
+                            fit: BoxFit.fill)),
+                    margin: const EdgeInsets.all(5),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        image_selected == null
+                            ? CircleAvatar(
+                                backgroundImage: AssetImage(
+                                    "assets/images/Avatar_$avatarName.png"),
+                                backgroundColor: Colors.transparent,
+                                radius: 55,
+                              )
+                            : CircleAvatar(
+                                backgroundImage: FileImage(image_selected),
+                                backgroundColor: Colors.transparent,
+                                radius: 55,
                               ),
-                            ],
+                        Positioned(
+                          right: -1,
+                          bottom: 0,
+                          child: CircleAvatar(
+                            backgroundColor:
+                                const Color.fromRGBO(23, 32, 42, 1),
+                            radius: 30,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.add_a_photo,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                              onPressed: () async {
+                                await openDialog();
+                              },
+                            ),
                           ),
                         ),
-                        firstName,
-                        lastName,
-                        email,
-                        pass,
-                        btnSend,
-                      ]),
+                      ],
                     ),
                   ),
-                ),
-              ]),
-        ),
-      ),
-    );
+                  firstName,
+                  lastName,
+                  email,
+                  pass,
+                  btnSend,
+                ]),
+              ),
+            ),
+          ),
+        ]);
   }
 
   Future<bool?> openDialog() => showDialog<bool>(
@@ -314,5 +308,67 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     }
     return false;
+  }
+}
+
+class MobileRegisterScreen extends StatelessWidget {
+  const MobileRegisterScreen({
+    Key? key,
+    required this.dataRegister,
+  }) : super(key: key);
+
+  final Widget dataRegister;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/images/register_background.jpg"),
+            fit: BoxFit.cover),
+      ),
+      padding: EdgeInsets.all(20),
+      child: SingleChildScrollView(child: dataRegister),
+    );
+  }
+}
+
+class DesktopLoginScreen extends StatelessWidget {
+  const DesktopLoginScreen({
+    Key? key,
+    required this.dataRegister,
+  }) : super(key: key);
+
+  final Widget dataRegister;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Container(
+                decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(
+                      "assets/images/register_background_desktop.jpg"),
+                  fit: BoxFit.cover),
+            )),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              child: SingleChildScrollView(child: dataRegister),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

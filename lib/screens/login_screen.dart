@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:poke_social/responsive.dart';
 import 'package:poke_social/widgets/text_email_widget.dart';
 import 'package:poke_social/widgets/text_pass_widget.dart';
 
@@ -65,9 +66,12 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Theme.of(context).primaryColor,
     );
 
-    final rowBtnSocial = Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [btnGoogle, btnFacebook, btnGitHub]);
+    final rowBtnSocial = SizedBox(
+      width: 250,
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [btnGoogle, btnFacebook, btnGitHub]),
+    );
 
     final rowRegister = Row(children: [
       const Text("Do you have an acount?"),
@@ -84,73 +88,168 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       //appBar: AppBar(title: Text("Login")),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/images/login_background.jpg"),
-              fit: BoxFit.cover),
+      body: Responsive(
+        mobile: MobileLoginScreen(
+          dataLogin:
+              dataLogin(context, btnSend, rowBtnSocial, rowRegister, false),
         ),
-        padding: EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                    height: 100,
-                    width: 290,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage("assets/images/pokemon_logo.png"),
-                          fit: BoxFit.fill),
-                    ),
-                    margin: EdgeInsets.all(30)),
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(30.0),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
-                      decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.6),
-                          borderRadius: BorderRadius.circular(30)),
-                      child: Column(children: [
-                        const Text(
-                          "Hello again!",
-                          style: TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.bold),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Welcome to the biggest pokemon family in the world",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        email,
-                        pass,
-                        btnForgotPass,
-                        btnSend,
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            "Or continue with",
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w600),
-                          ),
-                        ),
-                        rowBtnSocial,
-                        rowRegister
-                      ]),
+        tablet: TabletLoginScreen(
+            dataLogin:
+                dataLogin(context, btnSend, rowBtnSocial, rowRegister, true)),
+        desktop: DesktopLoginScreen(
+          dataLogin:
+              dataLogin(context, btnSend, rowBtnSocial, rowRegister, false),
+        ),
+      ),
+    );
+  }
+
+  Widget dataLogin(BuildContext context, SocialLoginButton btnSend,
+      SizedBox rowBtnSocial, Row rowRegister, bool isTablet) {
+    // ignore: unused_local_variable
+    double screenWidth = MediaQuery.of(context).size.width;
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              height: 100,
+              width: 290,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage("assets/images/pokemon_logo.png"),
+                    fit: BoxFit.fill),
+              ),
+              margin: EdgeInsets.all(30)),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(30.0),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+              child: Container(
+                padding: EdgeInsets.fromLTRB(10, 20, 10, 10),
+                margin: isTablet
+                    ? EdgeInsets.only(
+                        left: screenWidth * 0.15, right: screenWidth * 0.15)
+                    : EdgeInsets.all(0),
+                decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.6),
+                    borderRadius: BorderRadius.circular(30)),
+                child: Column(children: [
+                  const Text(
+                    "Hello again!",
+                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "Welcome to the biggest pokemon family in the world",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                ),
-              ]),
-        ),
+                  email,
+                  pass,
+                  btnForgotPass,
+                  btnSend,
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "Or continue with",
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                  rowBtnSocial,
+                  rowRegister
+                ]),
+              ),
+            ),
+          ),
+        ]);
+  }
+}
+
+class MobileLoginScreen extends StatelessWidget {
+  const MobileLoginScreen({
+    Key? key,
+    required this.dataLogin,
+  }) : super(key: key);
+
+  final Widget dataLogin;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/images/login_background.jpg"),
+            fit: BoxFit.cover),
+      ),
+      padding: EdgeInsets.all(20),
+      child: SingleChildScrollView(child: dataLogin),
+    );
+  }
+}
+
+class TabletLoginScreen extends StatelessWidget {
+  const TabletLoginScreen({
+    Key? key,
+    required this.dataLogin,
+  }) : super(key: key);
+
+  final Widget dataLogin;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("assets/images/login_background.jpg"),
+            fit: BoxFit.cover),
+      ),
+      padding: const EdgeInsets.all(20),
+      child: SingleChildScrollView(child: dataLogin),
+    );
+  }
+}
+
+class DesktopLoginScreen extends StatelessWidget {
+  const DesktopLoginScreen({
+    Key? key,
+    required this.dataLogin,
+  }) : super(key: key);
+
+  final Widget dataLogin;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      height: double.infinity,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            flex: 2,
+            child: Container(
+                decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage("assets/images/login_background.jpg"),
+                  fit: BoxFit.cover),
+            )),
+          ),
+          Expanded(
+            flex: 1,
+            child: Container(
+              child: SingleChildScrollView(child: dataLogin),
+            ),
+          ),
+        ],
       ),
     );
   }
