@@ -1,22 +1,73 @@
 import 'package:flutter/material.dart';
+import 'package:poke_social/provider/theme_provider.dart';
 import 'package:poke_social/routes.dart';
 import 'package:poke_social/screens/login_screen.dart';
+import 'package:poke_social/screens/onboarding_screen.dart';
+import 'package:poke_social/screens/welcome_screen.dart';
+import 'package:poke_social/settings/shared_preferences_settings.dart';
 import 'package:poke_social/settings/styles_settings.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp( MyApp());
+void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({super.key});
-  int contador=0;
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      routes: getAplicationRoutes(),
-      theme: myTheme,
-      title: 'Poke Social',
-      home: LoginScreen(),
-    );
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int contador = 0;
+  bool themeKey = false;
+  SharePrefSettings sharePrefSettings = SharePrefSettings();
+
+  @override
+  Widget build(BuildContext context) => FutureBuilder(
+      future: getTheme(),
+      // ignore: avoid_types_as_parameter_names
+      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+        if (snapshot.hasData) {
+          return ChangeNotifierProvider(
+              create: (context) => ThemeProvider()..init(themeKey),
+              builder: (context, _) {
+                final themeProvider = Provider.of<ThemeProvider>(context);
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  routes: getAplicationRoutes(),
+                  themeMode: themeProvider.themeMode,
+                  theme: myThemes.lightTheme,
+                  darkTheme: myThemes.darkTheme,
+                  title: 'Poke Social',
+                  home: WelcomeScreen(),
+                );
+              });
+        } else {
+          return const Center(
+              child: Center(
+                  child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+          )));
+        }
+      });
+
+  Future<bool> getTheme() async {
+    themeKey = (await sharePrefSettings.getTheme())!;
+    return themeKey;
   }
 }
+/*
+ChangeNotifierProvider(
+        create: (context) => ThemeProvider()..init(themeKey),
+        builder: (context, _) {
+          final themeProvider = Provider.of<ThemeProvider>(context);
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            routes: getAplicationRoutes(),
+            themeMode: themeProvider.themeMode,
+            theme: myThemes.lightTheme,
+            darkTheme: myThemes.darkTheme,
+            title: 'Poke Social',
+            home: WelcomeScreen(),
+          );
+        });*/

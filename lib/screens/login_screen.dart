@@ -60,7 +60,9 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final btnSend = SocialLoginButton(
       buttonType: SocialLoginButtonType.generalLogin,
-      onPressed: () {},
+      onPressed: () {
+        Navigator.pushNamed(context, '/dashBoard');
+      },
       mode: SocialLoginButtonMode.single,
       borderRadius: 15,
       backgroundColor: Theme.of(context).primaryColor,
