@@ -31,11 +31,11 @@ class _ScreenSettingsState extends State<ScreenSettings> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        padding: EdgeInsets.all(20),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        padding: const EdgeInsets.all(20),
+        child: ListView(shrinkWrap: true, children: [
           const Text(
             "Screen",
-            textAlign: TextAlign.end,
+            textAlign: TextAlign.start,
             style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
@@ -45,47 +45,70 @@ class _ScreenSettingsState extends State<ScreenSettings> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               cardColorScheme(
-                  "light_theme.jpg", !themeProvider.isDarkMode, false),
-              cardColorScheme("dark_theme.jpg", themeProvider.isDarkMode, true),
+                  "light_theme.jpg", themeProvider.getTheme == 0, 0),
+              cardColorScheme("dark_theme.jpg", themeProvider.getTheme == 1, 1),
             ],
           ),
-          Container(
-            height: 50,
-            width: 150,
-            padding: const EdgeInsets.only(right: 5, left: 5),
-            decoration: BoxDecoration(
-                color: Colors.red, borderRadius: BorderRadius.circular(30)),
-            child: Row(children: [
-              Image.asset(
-                "assets/images/types/type_fighting.png",
-                height: 40,
-                width: 40,
-                fit: BoxFit.fill,
-              ),
-              SizedBox(
-                width: 5,
-              ),
-              Text("Fighting",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold))
-            ]),
-          )
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              cardColorScheme("warm_theme.jpg", themeProvider.getTheme == 2, 2),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Text("COLOR PALETTE"),
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            primary: false,
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            crossAxisCount: 2,
+            children: <Widget>[
+              cardType("assets/images/types/type_bug.png", "Bug", Colors.green),
+              cardType(
+                  "assets/images/types/type_dark.png", "Dark", Colors.black26),
+              cardType("assets/images/types/type_dragon.png", "Dragon",
+                  Colors.blueAccent),
+              cardType("assets/images/types/type_electric.png", "Electric",
+                  Colors.yellowAccent),
+              cardType("assets/images/types/type_fairy.png", "Bug",
+                  Colors.pinkAccent),
+            ],
+          ),
         ]),
       ),
     );
   }
 
-  Widget cardColorScheme(String image, bool isActive, bool isDark) {
+  Widget cardColorScheme(String image, bool isActive, int theme) {
+    List<String> title = ["Light mode", "Dark mode", "Warm mode"];
     // !themeProvider.isDarkMode
+    /* 
+    theme == 0 light
+    theme == 1 dark
+    theme == 2
+    */
     return GestureDetector(
       onTap: () async {
         final provider = Provider.of<ThemeProvider>(context, listen: false);
-        if (isDark) {
-          provider.toggleTheme(true);
-          await sharePrefSettings.setTheme(true);
-        } else {
-          provider.toggleTheme(false);
-          await sharePrefSettings.setTheme(false);
+
+        switch (theme) {
+          case 0:
+            provider.toggleTheme(false, 0);
+            await sharePrefSettings.setTheme(0);
+            print("gf");
+            break;
+          case 1:
+            provider.toggleTheme(true, 1);
+            await sharePrefSettings.setTheme(1);
+            break;
+          case 2:
+            provider.toggleTheme(false, 2);
+            await sharePrefSettings.setTheme(2);
+            break;
         }
       },
       child: Column(
@@ -119,12 +142,36 @@ class _ScreenSettingsState extends State<ScreenSettings> {
             height: 10,
           ),
           Text(
-            isDark ? "Dark mode" : "Light mode",
+            title[theme],
             style: TextStyle(
                 color: isActive ? Theme.of(context).primaryColor : null),
           )
         ],
       ),
+    );
+  }
+
+  Widget cardType(String image, String type, Color color) {
+    return Container(
+      height: 50,
+      width: 150,
+      padding: const EdgeInsets.only(right: 5, left: 5),
+      decoration:
+          BoxDecoration(color: color, borderRadius: BorderRadius.circular(30)),
+      child: Row(children: [
+        Image.asset(
+          image,
+          height: 40,
+          width: 40,
+          fit: BoxFit.fill,
+        ),
+        const SizedBox(
+          width: 5,
+        ),
+        Text(type,
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold))
+      ]),
     );
   }
 }

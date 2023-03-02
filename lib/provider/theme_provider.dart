@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:poke_social/settings/styles_settings.dart';
 //import '../utils/appSimplePreferences.dart';
 
 class ThemeProvider extends ChangeNotifier {
   //appPreferences app_preferences = appPreferences();
   late ThemeMode themeMode;
-
+  late int themeKey;
   bool get isDarkMode => themeMode == ThemeMode.dark;
 
-  void toggleTheme(bool isOn) {
+  int get getTheme => themeKey;
+
+  void toggleTheme(bool isOn, int key) {
     themeMode = isOn ? ThemeMode.dark : ThemeMode.light;
+    themeKey = key;
     notifyListeners();
   }
 
@@ -20,10 +24,11 @@ class ThemeProvider extends ChangeNotifier {
       return themeMode = ThemeMode.light;
   }
 
-  init(bool theme) {
-    if (theme != null)
-      themeMode = theme ? ThemeMode.dark : ThemeMode.light;
-    else
+  init(int theme) {
+    if (theme != null) {
+      themeKey = theme;
+      themeMode = theme == 1 ? ThemeMode.dark : ThemeMode.light;
+    } else
       themeMode = ThemeMode.dark;
     notifyListeners();
   }

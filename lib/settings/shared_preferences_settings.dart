@@ -14,17 +14,17 @@ class SharePrefSettings {
       false;
   }
 
-  Future<void> setTheme(bool theme) async {
+  Future<void> setTheme(int theme) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setBool('theme', theme); //true=> oscuro, false =>claro
+    await preferences.setInt('theme', theme); //true=> oscuro, false =>claro
   }
 
-  Future<bool?> getTheme() async {
+  Future<int?> getTheme() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     if (preferences.containsKey('theme')) {
-      return preferences.getBool('theme');
+      return preferences.getInt('theme');
     } else {
-      false;
+      0;
     }
   }
 }

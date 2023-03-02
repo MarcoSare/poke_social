@@ -18,25 +18,26 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int contador = 0;
-  bool themeKey = false;
+  int? themeKey = 0;
   SharePrefSettings sharePrefSettings = SharePrefSettings();
 
   @override
   Widget build(BuildContext context) => FutureBuilder(
       future: getTheme(),
       // ignore: avoid_types_as_parameter_names
-      builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
         if (snapshot.hasData) {
           return ChangeNotifierProvider(
-              create: (context) => ThemeProvider()..init(themeKey),
+              create: (context) => ThemeProvider()..init(themeKey!),
               builder: (context, _) {
                 final themeProvider = Provider.of<ThemeProvider>(context);
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
                   routes: getAplicationRoutes(),
                   themeMode: themeProvider.themeMode,
-                  theme: myThemes.lightTheme,
+                  theme: themeProvider.themeKey == 0
+                      ? myThemes.lightTheme
+                      : myThemes.warmTheme,
                   darkTheme: myThemes.darkTheme,
                   title: 'Poke Social',
                   home: WelcomeScreen(),
@@ -51,9 +52,11 @@ class _MyAppState extends State<MyApp> {
         }
       });
 
-  Future<bool> getTheme() async {
-    themeKey = (await sharePrefSettings.getTheme())!;
-    return themeKey;
+  Future<int> getTheme() async {
+    themeKey = (await sharePrefSettings.getTheme());
+    print(themeKey);
+    if (themeKey == null) themeKey = 0;
+    return themeKey!;
   }
 }
 /*
