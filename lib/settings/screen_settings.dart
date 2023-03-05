@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:poke_social/settings/shared_preferences_settings.dart';
 import 'package:provider/provider.dart';
