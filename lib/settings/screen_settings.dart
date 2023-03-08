@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:poke_social/settings/shared_preferences_settings.dart';
 import 'package:provider/provider.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 import '../provider/theme_provider.dart';
 
@@ -39,43 +40,25 @@ class _ScreenSettingsState extends State<ScreenSettings> {
           const SizedBox(height: 20),
           const Text("COLOR SCHEME"),
           const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              cardColorScheme(
-                  "light_theme.jpg", themeProvider.getTheme == 0, 0),
-              cardColorScheme("dark_theme.jpg", themeProvider.getTheme == 1, 1),
-            ],
-          ),
+          ResponsiveGridRow(children: [
+            ResponsiveGridCol(
+                xs: 6,
+                md: 4,
+                child: cardColorScheme(
+                    "light_theme.jpg", themeProvider.getTheme == 0, 0)),
+            ResponsiveGridCol(
+                xs: 6,
+                md: 4,
+                child: cardColorScheme(
+                    "dark_theme.jpg", themeProvider.getTheme == 1, 1)),
+            ResponsiveGridCol(
+                xs: 6,
+                md: 4,
+                child: cardColorScheme(
+                    "warm_theme.jpg", themeProvider.getTheme == 2, 2)),
+          ]),
           const SizedBox(height: 10),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              cardColorScheme("warm_theme.jpg", themeProvider.getTheme == 2, 2),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Text("COLOR PALETTE"),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            primary: false,
-            padding: const EdgeInsets.only(top: 10, bottom: 10),
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 2,
-            children: <Widget>[
-              cardType("assets/images/types/type_bug.png", "Bug", Colors.green),
-              cardType(
-                  "assets/images/types/type_dark.png", "Dark", Colors.black26),
-              cardType("assets/images/types/type_dragon.png", "Dragon",
-                  Colors.blueAccent),
-              cardType("assets/images/types/type_electric.png", "Electric",
-                  Colors.yellowAccent),
-              cardType("assets/images/types/type_fairy.png", "Bug",
-                  Colors.pinkAccent),
-            ],
-          ),
+          const Text("COLOR PALETTE"),
         ]),
       ),
     );
@@ -97,7 +80,6 @@ class _ScreenSettingsState extends State<ScreenSettings> {
           case 0:
             provider.toggleTheme(false, 0);
             await sharePrefSettings.setTheme(0);
-            print("gf");
             break;
           case 1:
             provider.toggleTheme(true, 1);
@@ -173,3 +155,42 @@ class _ScreenSettingsState extends State<ScreenSettings> {
     );
   }
 }
+/*
+Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              cardColorScheme(
+                  "light_theme.jpg", themeProvider.getTheme == 0, 0),
+              cardColorScheme("dark_theme.jpg", themeProvider.getTheme == 1, 1),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              cardColorScheme("warm_theme.jpg", themeProvider.getTheme == 2, 2),
+            ],
+          ),
+
+
+          GridView.count(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            primary: false,
+            padding: const EdgeInsets.only(top: 10, bottom: 10),
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            crossAxisCount: 2,
+            children: <Widget>[
+              cardType("assets/images/types/type_bug.png", "Bug", Colors.green),
+              cardType(
+                  "assets/images/types/type_dark.png", "Dark", Colors.black26),
+              cardType("assets/images/types/type_dragon.png", "Dragon",
+                  Colors.blueAccent),
+              cardType("assets/images/types/type_electric.png", "Electric",
+                  Colors.yellowAccent),
+              cardType("assets/images/types/type_fairy.png", "Bug",
+                  Colors.pinkAccent),
+            ],
+          ),
+*/

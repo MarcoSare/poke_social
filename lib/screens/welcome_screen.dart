@@ -29,15 +29,14 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Responsive(
-        desktop: DesktopLoginScreen(dataOnBoarding: dataOnBoarding()),
-        mobile: MobileRegisterScreen(
-            dataOnBoarding:
-                MobileRegisterScreen(dataOnBoarding: dataOnBoarding())),
+        desktop: const DesktopLoginScreen(),
+        tablet: MobileRegisterScreen(dataOnBoarding: dataOnBoarding(true)),
+        mobile: MobileRegisterScreen(dataOnBoarding: dataOnBoarding(false)),
       ),
     );
   }
 
-  Widget dataOnBoarding() {
+  Widget dataOnBoarding(bool isTablet) {
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -53,10 +52,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     });
                   },
                   itemBuilder: (context, index) => OnboardContent(
-                        title: demoData[index].title,
-                        descripcion: demoData[index].description,
-                        image: demoData[index].image,
-                      )),
+                      title: demoData[index].title,
+                      descripcion: demoData[index].description,
+                      image: demoData[index].image,
+                      isTablet: isTablet)),
             ),
           ],
         ),
@@ -82,8 +81,9 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             bottom: 0,
             child: Padding(
               padding: const EdgeInsets.all(20),
-              child: SizedBox(
-                width: 300,
+              child: Container(
+                padding: const EdgeInsets.only(right: 30, left: 30),
+                width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
                     ...List.generate(
@@ -143,9 +143,11 @@ class OnboardContent extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.descripcion,
-      required this.image})
+      required this.image,
+      required this.isTablet})
       : super(key: key);
   final String title, descripcion, image;
+  final bool isTablet;
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +179,7 @@ class OnboardContent extends StatelessWidget {
                         title,
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 30,
+                            fontSize: isTablet ? 38 : 30,
                             fontWeight: FontWeight.bold),
                       ),
                     )),
@@ -195,7 +197,8 @@ class OnboardContent extends StatelessWidget {
                     delay: Duration(microseconds: 700),
                     child: Text(
                       descripcion,
-                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      style: TextStyle(
+                          color: Colors.white, fontSize: isTablet ? 24 : 18),
                     ),
                   ),
                 ),
@@ -260,7 +263,7 @@ class OnboardContentDesktop extends StatelessWidget {
                     title,
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 30,
+                        fontSize: 48,
                         fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -275,7 +278,7 @@ class OnboardContentDesktop extends StatelessWidget {
                   delay: Duration(microseconds: 700),
                   child: Text(
                     descripcion,
-                    style: TextStyle(color: Colors.white, fontSize: 18),
+                    style: TextStyle(color: Colors.white, fontSize: 28),
                   ),
                 ),
               ),
@@ -314,10 +317,7 @@ class MobileRegisterScreen extends StatelessWidget {
 class DesktopLoginScreen extends StatefulWidget {
   const DesktopLoginScreen({
     Key? key,
-    required this.dataOnBoarding,
   }) : super(key: key);
-
-  final Widget dataOnBoarding;
 
   @override
   State<DesktopLoginScreen> createState() => _DesktopLoginScreenState();

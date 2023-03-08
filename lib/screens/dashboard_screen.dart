@@ -17,6 +17,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
+      appBar: AppBar(title: Text("Poke Social")),
       body: Container(),
       drawer: Drawer(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,

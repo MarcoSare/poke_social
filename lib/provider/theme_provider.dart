@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:poke_social/settings/styles_settings.dart';
-//import '../utils/appSimplePreferences.dart';
-
 class ThemeProvider extends ChangeNotifier {
   //appPreferences app_preferences = appPreferences();
   late ThemeMode themeMode;
