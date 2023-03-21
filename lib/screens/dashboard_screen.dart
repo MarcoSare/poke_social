@@ -44,6 +44,16 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   onTap: () {
                     Navigator.pushNamed(context, '/screenSettings');
                   }),
+              ListTile(
+                  title: const Text(
+                    'Events',
+                  ),
+                  leading: const Icon(
+                    Icons.brightness_5,
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/events');
+                  }),
             ],
           )),
     );

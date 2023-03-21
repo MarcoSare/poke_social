@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:poke_social/provider/theme_provider.dart';
 import 'package:poke_social/routes.dart';
 import 'package:poke_social/screens/login_screen.dart';
-import 'package:poke_social/screens/onboarding_screen.dart';
 import 'package:poke_social/screens/welcome_screen.dart';
 import 'package:poke_social/settings/shared_preferences_settings.dart';
 import 'package:poke_social/settings/styles_settings.dart';
