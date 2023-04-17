@@ -151,17 +151,6 @@ class _AddEventScreenState extends State<AddEventScreen> {
                   "End time",
                 ),
               ),
-              SocialLoginButton(
-                buttonType: SocialLoginButtonType.generalLogin,
-                text: "ver eventos",
-                textColor: Colors.black,
-                onPressed: () {
-                  seeEvents();
-                },
-                mode: SocialLoginButtonMode.single,
-                borderRadius: 15,
-                height: 40,
-              )
             ],
           ),
         ),

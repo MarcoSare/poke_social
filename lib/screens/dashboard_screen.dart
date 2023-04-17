@@ -49,10 +49,20 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     'Events',
                   ),
                   leading: const Icon(
-                    Icons.brightness_5,
+                    Icons.calendar_month,
                   ),
                   onTap: () {
                     Navigator.pushNamed(context, '/events');
+                  }),
+              ListTile(
+                  title: const Text(
+                    'Pokedex',
+                  ),
+                  leading: const Icon(
+                    Icons.catching_pokemon_sharp,
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/pokedex');
                   }),
             ],
           )),

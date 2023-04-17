@@ -50,7 +50,6 @@ class DatabaseHelper {
 
   Future<int> INSERT(String tblName, Map<String, dynamic> data) async {
     var conexion = await database;
-    print("fdgfdgdfgfdgdfgfdg");
     return conexion.insert(tblName, data);
   }
 

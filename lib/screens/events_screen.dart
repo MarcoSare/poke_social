@@ -135,7 +135,7 @@ class _EventsScreenState extends State<EventsScreen> {
                         textStyle: TextStyle(
                             fontStyle: FontStyle.normal,
                             fontSize: 15,
-                            color: Theme.of(context).primaryColorLight),
+                            color: Theme.of(context).disabledColor),
                         leadingDatesTextStyle:
                             TextStyle(color: Theme.of(context).highlightColor),
                         trailingDatesTextStyle:
@@ -160,7 +160,10 @@ class _EventsScreenState extends State<EventsScreen> {
           }),
       floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.pushNamed(context, '/addEvent');
+            Navigator.pushNamed(context, '/addEvent')
+                .then((value) => setState(() {
+                      refresh();
+                    }));
           },
           child: const Icon(
             Icons.add,
@@ -171,10 +174,13 @@ class _EventsScreenState extends State<EventsScreen> {
 
   Future<void> initData() async {
     events = await database.GETALLEVENTS();
-    //database.DELETE('tblEvent', 1);
-    print(events!.length);
-    events!
-        .forEach((item) => print(item.dateEvent! + " " + item.startTimeEvent!));
+  }
+
+  Future<void> refresh() async {
+    var list = await database.GETALLEVENTS();
+    setState(() {
+      events = list;
+    });
   }
 
   String getMonth(int index) {
@@ -208,8 +214,12 @@ class _EventsScreenState extends State<EventsScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                DatailsEventScreen(listEvents: eventFromDate)));
+            builder: (context) => DatailsEventScreen(
+                  listEvents: eventFromDate,
+                  mes: details.date!.month,
+                ))).then((value) => setState(() {
+          refresh();
+        }));
 
     //var appointmentDetails = details.appointments![0];
   }
@@ -268,13 +278,45 @@ class _EventsScreenState extends State<EventsScreen> {
   Color getColorEvent(DateTime dateEvent, bool isCompleted) {
     DateTime now =
         DateFormat('yyyy-MM-dd HH:mm').parse(DateTime.now().toString());
+
+    if (isCompleted) {
+      return Colors.green;
+    } else if (dateEvent.year < now.year) {
+      return Colors.red;
+    } else if (dateEvent.month < now.month) {
+      return Colors.red;
+    } else if (dateEvent.month == now.month) {
+      if (dateEvent.day < now.day) {
+        return Colors.red;
+      } else if (dateEvent.day == now.day) {
+        if (dateEvent.hour < now.hour) {
+          return Colors.red;
+        } else if (dateEvent.hour == now.hour) {
+          if (dateEvent.minute <= now.minute) {
+            return Colors.red;
+          } else {
+            return Colors.amber;
+          }
+        } else {
+          return Colors.amber;
+        }
+      } else if ((dateEvent.day - now.day) <= 2) {
+        return Colors.amber;
+      }
+    }
+    return Colors.green;
+  }
+}
+
+/* 
+  DateTime now =
+        DateFormat('yyyy-MM-dd HH:mm').parse(DateTime.now().toString());
     if (isCompleted) return Colors.green;
     Duration diff = dateEvent.difference(now);
     if (diff.inDays == 0 && diff.inMinutes <= 0) return Colors.red;
     if (diff.inDays <= 2) return Colors.yellow;
     return Colors.green;
-  }
-}
+*/
 
 class MeetingDataSource extends CalendarDataSource {
   /// Creates a meeting data source, which used to set the appointment

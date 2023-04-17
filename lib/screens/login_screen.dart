@@ -134,7 +134,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         left: screenWidth * 0.15, right: screenWidth * 0.15)
                     : EdgeInsets.all(0),
                 decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.6),
+                    color: Theme.of(context)
+                        .scaffoldBackgroundColor
+                        .withOpacity(0.4),
                     borderRadius: BorderRadius.circular(30)),
                 child: Column(children: [
                   const Text(
