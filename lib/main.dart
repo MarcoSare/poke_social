@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:poke_social/models/user_model.dart';
 import 'package:poke_social/provider/theme_provider.dart';
 import 'package:poke_social/routes.dart';
 import 'package:poke_social/screens/login_screen.dart';
 import 'package:poke_social/screens/welcome_screen.dart';
 import 'package:poke_social/settings/shared_preferences_settings.dart';
 import 'package:poke_social/settings/styles_settings.dart';
+import 'package:poke_social/settings/user_preferences.dart';
 import 'package:provider/provider.dart';
+
+import 'screens/dashboard_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -18,7 +22,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int? themeKey = 0;
+  String? firstName;
+  UserModel? userModel;
   SharePrefSettings sharePrefSettings = SharePrefSettings();
+  UserPreferences userPreferences = UserPreferences();
 
   @override
   Widget build(BuildContext context) => FutureBuilder(
@@ -39,7 +46,9 @@ class _MyAppState extends State<MyApp> {
                       : myThemes.warmTheme,
                   darkTheme: myThemes.darkTheme,
                   title: 'Poke Social',
-                  home: WelcomeScreen(),
+                  home: firstName != null
+                      ? DashBoardScreen(user: userModel!)
+                      : WelcomeScreen(),
                 );
               });
         } else {
@@ -53,8 +62,11 @@ class _MyAppState extends State<MyApp> {
 
   Future<int> getTheme() async {
     themeKey = (await sharePrefSettings.getTheme());
-    print(themeKey);
-    if (themeKey == null) themeKey = 0;
+    firstName = (await userPreferences.getFirstName());
+    if (firstName != null) {
+      userModel = await userPreferences.getUser();
+    }
+    themeKey ??= 0;
     return themeKey!;
   }
 }

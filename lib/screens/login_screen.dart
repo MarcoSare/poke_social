@@ -1,7 +1,12 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:poke_social/models/user_model.dart';
 import 'package:poke_social/responsive.dart';
+import 'package:poke_social/screens/dashboard_screen.dart';
+import 'package:poke_social/settings/user_preferences.dart';
 import 'package:poke_social/widgets/text_email_widget.dart';
 import 'package:poke_social/widgets/text_pass_widget.dart';
 
@@ -15,26 +20,11 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  UserPreferences userPreferences = UserPreferences();
+  final GoogleSignIn googleSignIn = GoogleSignIn();
   emailFormField email =
       emailFormField("Email", "Ingresa tu email", "Llene este campo");
   textFieldPass pass = textFieldPass();
-  final btnGoogle = SocialLoginButton(
-    buttonType: SocialLoginButtonType.google,
-    onPressed: () {},
-    mode: SocialLoginButtonMode.single,
-    borderRadius: 15,
-    width: 77,
-    text: "",
-  );
-
-  final btnFacebook = SocialLoginButton(
-    buttonType: SocialLoginButtonType.facebook,
-    onPressed: () {},
-    mode: SocialLoginButtonMode.single,
-    borderRadius: 15,
-    width: 77,
-    text: "",
-  );
 
   final btnGitHub = SocialLoginButton(
     buttonType: SocialLoginButtonType.github,
@@ -58,6 +48,66 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final btnGoogle = SocialLoginButton(
+      buttonType: SocialLoginButtonType.google,
+      onPressed: () {
+        googleSignIn.signIn().then((value) async {
+          String userName = value!.displayName!;
+          String profilePicture = value.photoUrl!;
+          String email = value.email;
+          UserModel userModel = UserModel(
+              firstName: userName,
+              email: email,
+              profilePicture: profilePicture);
+          await userPreferences.setUserModel(userModel, "google");
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DashBoardScreen(
+                        user: userModel,
+                      )));
+        });
+      },
+      mode: SocialLoginButtonMode.single,
+      borderRadius: 15,
+      width: 77,
+      text: "",
+    );
+
+    final btnFacebook = SocialLoginButton(
+      buttonType: SocialLoginButtonType.facebook,
+      onPressed: () async {
+        final LoginResult result = await FacebookAuth.instance.login();
+        if (result.status == LoginStatus.success) {
+          final _accessToken = result.accessToken;
+          final userData = await FacebookAuth.instance.getUserData();
+          String userName = userData["name"];
+          String profilePicture = userData["picture"]["url"] ??
+              "https://labmanufactura.net/Marco/to-do-api/public/ImagenesUsuarios/user.png";
+          String email = userData["email"];
+          UserModel userModel = UserModel(
+              firstName: userName,
+              email: email,
+              profilePicture: profilePicture);
+          await userPreferences.setUserModel(userModel, "facebook");
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DashBoardScreen(
+                        user: userModel,
+                      )));
+        } else {
+          print("Error");
+          print(result.status);
+          print(result.message);
+        }
+      },
+      mode: SocialLoginButtonMode.single,
+      borderRadius: 15,
+      width: 77,
+      text: "",
+    );
+
     final btnSend = SocialLoginButton(
       buttonType: SocialLoginButtonType.generalLogin,
       onPressed: () {

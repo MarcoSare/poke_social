@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "713393817636",
+    "project_id": "pokesocial-4c474",
+    "storage_bucket": "pokesocial-4c474.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:713393817636:android:1f1cbfbd39100c126ef0b1",
+        "android_client_info": {
+          "package_name": "com.example.poke_social"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "713393817636-16dq1o5vfgpb0d6rqvsh9oui7t8mroq2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.poke_social",
+            "certificate_hash": "15d1bc722a296284f633bf105c54a9361138a88f"
+          }
+        },
+        {
+          "client_id": "713393817636-gmaqr2olt2f80cas7nu4k5068s4pt0af.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAurHTErZCNsAAyXmZ-5fgnnM_iiGKzjws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "713393817636-9mfqubiho1jkli2f70qvhq95uvr0lr8k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -49,6 +49,10 @@ dependencies:
   intl: ^0.18.0
   syncfusion_flutter_calendar: 20.4.41
   percent_indicator: ^4.2.3
+  google_sign_in: ^6.1.0
+  firebase_auth: ^4.2.2
+  firebase_core: ^2.10.0
+  flutter_facebook_auth: ^5.0.8
 
 dev_dependencies:
   flutter_test:
